@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Str0ngPass@2026
+    ports:
+      - "1433:1433"
+    networks:
+      - appnetwork
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+
+  employeeapi:
+    build: .
+    container_name: employeeapi
+    depends_on:
+      - sqlserver
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=EmployeeDb;User Id=sa;Password=Str0ngPass@2026;TrustServerCertificate=True;"
+    ports:
+      - "8080:8080"
+    networks:
+      - appnetwork
+
+networks:
+  appnetwork:
+
+volumes:
+  sqlserverdata:
