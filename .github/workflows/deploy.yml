@@ -23,7 +23,7 @@ jobs:
           }
 
       - name: Publish App
-        run: dotnet publish EmployeeApi.sln -c Release -o C:\inetpub\wwwroot\EmployeeAPI
+        run: dotnet publish EmployeeApi/EmployeeApi.csproj -c Release -o C:\inetpub\wwwroot\EmployeeAPI
 
       - name: Start IIS
         run: C:\Windows\System32\iisreset.exe /start
