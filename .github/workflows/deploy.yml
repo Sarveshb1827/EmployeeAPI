@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Stop IIS
-        run: iisreset /stop
+        run: C:\Windows\System32\iisreset.exe /stop
 
       - name: Clean Old Files
         run: |
@@ -26,4 +26,4 @@ jobs:
         run: dotnet publish EmployeeApi.sln -c Release -o C:\inetpub\wwwroot\EmployeeAPI
 
       - name: Start IIS
-        run: iisreset /start
+        run: C:\Windows\System32\iisreset.exe /start
