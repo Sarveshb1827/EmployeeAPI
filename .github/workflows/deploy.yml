@@ -1,0 +1,34 @@
+name: Deploy ASP.NET Core to Local IIS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Stop IIS
+        run: iisreset /stop
+
+      - name: Clean Old Files
+        run: |
+          if (Test-Path "C:\inetpub\wwwroot\EmployeeAPI") {
+              Remove-Item "C:\inetpub\wwwroot\EmployeeAPI\*" -Recurse -Force
+          }
+
+      - name: Publish App
+        run: dotnet publish EmployeeApi.sln -c Release -o C:\inetpub\wwwroot\EmployeeAPI
+
+      - name: Start IIS
+        run: iisreset /start
